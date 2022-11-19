@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SupplierMvcApi.DataServices;
 using SupplierMvcApi.Models;
+using SupplierMvcApi.Repositories;
+using SupplierMvcApi.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,12 +27,11 @@ namespace SupplierMvcApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IDataService, SqliteDataService>();
+            services.AddScoped<ISupplierRepository, SupplierRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
             services.AddControllersWithViews();
 
-            var connectionString = new ConnectionString(Configuration.GetConnectionString("DefaultConnection"));
-            services.AddSingleton(connectionString);
-
-            services.AddScoped<IDataService, SqliteDataService>();
 
         }
 

@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using SupplierMvcApi.DataServices;
 using SupplierMvcApi.Models;
+using SupplierMvcApi.Repositories;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SupplierMvcApi.Controllers
+namespace SupplierMvcApi.Repository
 {
     public class SupplierRepository : ISupplierRepository
     {
@@ -14,40 +16,40 @@ namespace SupplierMvcApi.Controllers
             _dataService = dataService;
         }
 
-        public Task<SupplierModel[]> GetAll()
+        public Task<IEnumerable<SupplierModel>> GetAll()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public Task<SupplierModel> GetById(int id)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public Task<SupplierModel> GetByName(string name)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
 
         public Task Create(SupplierModel supplier)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public Task Delete(int id)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public Task Update(SupplierModel supplier)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+
         }
     }
 }

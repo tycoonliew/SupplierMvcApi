@@ -5,8 +5,10 @@ using Dapper;
 using Microsoft.Data.Sqlite;
 using System.Linq;
 using System.Collections.Generic;
+using SupplierMvcApi.Repositories;
+using System;
 
-namespace SupplierMvcApi.Controllers
+namespace SupplierMvcApi.Repository
 {
     public class ProductRepository : IProductRepository
     {
@@ -68,7 +70,7 @@ namespace SupplierMvcApi.Controllers
 
         public void Dispose()
         {
-            // TODO: Implement dispose
+
         }
 
     }

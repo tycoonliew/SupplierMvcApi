@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Logging;
 using SupplierMvcApi.DataServices;
 using SupplierMvcApi.Models;
+using SupplierMvcApi.Repositories;
+using SupplierMvcApi.Repository;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,14 +15,13 @@ namespace SupplierMvcApi.Controllers
     public class ProductController : Controller
     {
         private readonly ILogger<ProductController> _logger;
-        private readonly IDataService _dataService;
-        private readonly ProductRepository _productRepository;
-        private readonly SupplierRepository _supplierRepository;
-        public ProductController(ILogger<ProductController> logger, IDataService dataService, ProductRepository productRepository, SupplierRepository supplierRepository)
+        private readonly IProductRepository _productRepository;
+        private readonly ISupplierRepository _supplierRepository;
+        public ProductController(ILogger<ProductController> logger, IProductRepository productRepository, ISupplierRepository supplierRepository)
         {
             _logger = logger;
-            _dataService = dataService;
             _productRepository = productRepository;
+            _supplierRepository = supplierRepository;
         }
 
         [HttpGet("products")]
@@ -28,6 +29,13 @@ namespace SupplierMvcApi.Controllers
         {
             var allProducts = await _productRepository.GetAll();
             return Ok(allProducts);
+        }
+
+        [HttpPost("products")]
+        public async Task<IActionResult> AddNewProduct(ProductModel product)
+        {
+            await _productRepository.Create(product);
+            return Created("products", product);
         }
 
 

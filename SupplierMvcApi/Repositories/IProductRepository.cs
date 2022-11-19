@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SupplierMvcApi.Controllers
+namespace SupplierMvcApi.Repositories
 {
     public interface IProductRepository : IDisposable
     {

@@ -40,11 +40,15 @@ namespace SupplierMvcApi.DataServices
             using (var dbConnection = new SqliteConnection($"Data Source={path}"))
             {
                 dbConnection.Open();
-                await dbConnection.ExecuteAsync(query, parameter);
+                int rowsAffected = await dbConnection.ExecuteAsync(query, parameter);
+                if (rowsAffected <= 0)
+                {
+                    Console.WriteLine("No rows affected");
+                }
             }
         }
 
-        private async Task SeedDatabase()
+        private void SeedDatabase()
         {
             var path = _configuration.GetConnectionString("DefaultConnection");
             using (var dbConnection = new SqliteConnection($"Data Source={path}"))
@@ -58,20 +62,20 @@ namespace SupplierMvcApi.DataServices
                     [Name] NVARCHAR(256) NOT NULL,
                     [SKU] NVARCHAR(64) NOT NULL,
                     [Availability] BOOL NOT NULL,
-                    [Supplier] NVARCHAR(256) NOT NULL,
+                    [Supplier] NVARCHAR(256) NOT NULL
                 )";
 
-                var productRowsAffected = await dbConnection.ExecuteAsync(createProductQuery);
+                var productRowsAffected = dbConnection.Execute(createProductQuery);
 
                 string createSupplierQuery =
                 @"
                 CREATE TABLE IF NOT EXISTS [Supplier] 
                 (
                     [Id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                    [Name] NVARCHAR(256) NOT NULL,
+                    [Name] NVARCHAR(256) NOT NULL
                 )";
 
-                var supplierResult = await dbConnection.ExecuteAsync(createSupplierQuery);
+                var supplierResult = dbConnection.Execute(createSupplierQuery);
 
                 Console.WriteLine("Database Seeded");
             }
