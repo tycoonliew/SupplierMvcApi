@@ -58,7 +58,7 @@ namespace SupplierMvcApi.DataServices
                 @"
                 CREATE TABLE IF NOT EXISTS [Product] 
                 (
-                    [Id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                    [Id] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                     [Name] NVARCHAR(256) NOT NULL,
                     [SKU] NVARCHAR(64) NOT NULL,
                     [Availability] BOOL NOT NULL,
@@ -71,7 +71,7 @@ namespace SupplierMvcApi.DataServices
                 @"
                 CREATE TABLE IF NOT EXISTS [Supplier] 
                 (
-                    [Id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                    [Id] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                     [Name] NVARCHAR(256) NOT NULL
                 )";
 

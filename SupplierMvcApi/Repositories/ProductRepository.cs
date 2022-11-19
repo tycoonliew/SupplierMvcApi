@@ -20,16 +20,14 @@ namespace SupplierMvcApi.Repository
 
         public async Task<IEnumerable<ProductModel>> GetAll()
         {
-            string query = @"SELECT Id, Name, SKU, Availability, Supplier
-                            FROM products 
-                            WHERE *";
+            string query = @"SELECT * FROM Product";
             return await _dataService.GetData<ProductModel, dynamic>(query, new { });
         }
 
         public async Task<ProductModel> GetById(int id)
         {
-            string query = $@"SELECT Id, Name, SKU, Availability, Supplier
-                            FROM products 
+            string query = $@"SELECT *
+                            FROM Product 
                             WHERE Id=@Id";
             var results = await _dataService.GetData<ProductModel, dynamic>(query, new { Id = id });
             return results.FirstOrDefault();
@@ -37,8 +35,8 @@ namespace SupplierMvcApi.Repository
 
         public async Task<ProductModel> GetByName(string name)
         {
-            string query = $@"SELECT Id, Name, SKU, Availability, Supplier
-                            FROM products 
+            string query = $@"SELECT *
+                            FROM Product 
                             WHERE Name=@Name";
             var results = await _dataService.GetData<ProductModel, dynamic>(query, new { Name = name });
             return results.FirstOrDefault();
@@ -55,11 +53,11 @@ namespace SupplierMvcApi.Repository
 
         public async Task Create(ProductModel product)
         {
-            string query = $@"INSERT INTO Product 
-                            VALUES (@Id, @Name, @Availability, @SKU, @Supplier)";
+            string query = $@"INSERT INTO Product (Name, SKU, Availability, Supplier)
+                            VALUES (@Name, @SKU, @Availability,@Supplier)";
 
             await _dataService.UpdateData(query,
-                new { product.Id, product.Name, product.Availability, product.SKU, product.Supplier });
+                new { product.Name, product.Availability, product.SKU, product.Supplier });
         }
 
         public async Task Delete(int id)
