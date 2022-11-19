@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace SupplierMvcApi.Controllers
@@ -18,6 +19,8 @@ namespace SupplierMvcApi.Controllers
         private readonly IProductRepository _productRepository;
         private readonly ISupplierRepository _supplierRepository;
 
+        private List<ProductModel> _products = new();
+
         public ProductController(ILogger<ProductController> logger, IProductRepository productRepository, ISupplierRepository supplierRepository)
         {
             _logger = logger;
@@ -25,42 +28,43 @@ namespace SupplierMvcApi.Controllers
             _supplierRepository = supplierRepository;
         }
 
-        [HttpGet("products")]
+        [HttpGet("api/products", Name = "GetAllProducts")]
         public async Task<IActionResult> GetAllProducts()
         {
             var allProducts = await _productRepository.GetAll();
+            _products = allProducts.ToList();
             return Ok(allProducts);
         }
 
-        [HttpPost("products")]
+        [HttpPost("api/products")]
         public async Task<IActionResult> AddNewProduct([FromBody] ProductModel product)
         {
             Console.WriteLine(product);
             await _productRepository.Create(product);
-            return Created("products", product);
+            return CreatedAtRoute("GetAllProducts", routeValues: new { id = product.ProductName }, value: product);
         }
 
-        [HttpGet("suppliers")]
+        [HttpGet("api/suppliers")]
         public async Task<IActionResult> GetAllSuppliers()
         {
             var allSuppliers = await _supplierRepository.GetAll();
             return Ok(allSuppliers);
         }
 
-        [HttpPost("suppliers")]
+        [HttpPost("api/suppliers")]
         public async Task<IActionResult> AddNewSupplier([FromBody] SupplierModel supplier)
         {
             await _supplierRepository.Create(supplier);
             return Created("supplier", supplier);
         }
 
-
-        public IActionResult Index()
+        public async Task<IActionResult> GetProducts()
         {
-            return View();
+            var test = await GetAllProducts();
+            return View(_products);
         }
 
-        public IActionResult Privacy()
+        public IActionResult CreateProducts()
         {
             return View();
         }

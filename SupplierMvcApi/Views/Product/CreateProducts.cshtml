@@ -1,0 +1,84 @@
+﻿@{
+    ViewData["Title"] = "Create Products";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Create products here:</p>
+<div>
+    <form action="javascript:void(0);" method="POST" onsubmit="createProduct()">
+        <label>Create A Product</label>
+
+        <div>
+            <label>Name: </label>
+            <br />
+            <input type="text" id="Name" name="Name" />
+        </div>
+        <div>
+            <label>SKU: </label>
+            <br />
+            <input type="text" id="SKU" name="SKU" />
+        </div>
+        <div>
+            <label for="Availability">Availability: </label>
+            <input type="checkbox" id="Availability" name="Availability" />
+        </div>
+        <div>
+            <label>Supplier ID: </label>
+            <br />
+            <input type="text" id="SupplierID" name="SupplierID" />
+        </div>
+        <div class="button">
+            <br />
+            <button type="submit">Save</button>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    const uri = "/api/products"
+
+    function createProduct() {
+        const productName = document.getElementById('Name');
+        const sku = document.getElementById('SKU');
+        const availiability = document.getElementById('Availability');
+        const supplierId = document.getElementById('SupplierID');
+
+        const product = {
+            ProductName: productName.value.trim(),
+            SKU: sku.value.trim(),
+            Availiability: availiability.value,
+            SupplierId: supplierId.value.trim(),
+        };
+
+        fetch(uri, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(product)
+        })
+            .then(response => response.json())
+            .then(() => {
+                getProducts();
+                productName.value = '';
+                sku.value = '';
+                availiability.value = false;
+                supplierId.value = '';
+
+            })
+            .catch(error => console.error('Unable to add item.', error));
+    }
+
+    function getProducts() {
+        fetch(uri)
+            .then(response => response.json())
+            .then(data => displayProducts(data))
+            .catch(error => console.error('Unable to get items.', error));
+    }
+
+    function displayProducts() {
+        window.location = '/Product/GetProducts';
+
+    }
+</script>

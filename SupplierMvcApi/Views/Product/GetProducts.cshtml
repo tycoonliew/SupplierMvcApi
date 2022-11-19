@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Products";
+}
+@model IEnumerable<SupplierMvcApi.Models.ProductModel>
+
+<h1>@ViewData["Title"]</h1>
+
+<p>View products here:</p>
+
+<div>
+    <label>Products</label>
+    <table>
+        <tr>
+            <th>ID </th>
+            <th>Name </th>
+            <th>SKU</th>
+            <th>Availiability</th>
+            <th>Supplier Name</th>
+        </tr>
+        @foreach (var d in Model)
+        {
+            <tr>
+                <td>@d.ProductId</td>
+                <td>@d.ProductName</td>
+                <td>@d.SKU</td>
+                <td>@d.Availability</td>
+                <td>@d.Supplier.SupplierName</td>
+            </tr>
+        }
+    </table>
+</div>
