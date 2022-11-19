@@ -1,9 +1,12 @@
-﻿namespace SupplierMvcApi.Models
+﻿using System.Collections;
+using System.Collections.Generic;
+
+namespace SupplierMvcApi.Models
 {
     public class SupplierModel : ModelBase
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public ProductModel[] Products { get; set; } // One to many relationship
+        public IEnumerable<ProductModel> Products { get; set; } // One to many relationship
     }
 }

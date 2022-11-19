@@ -30,7 +30,7 @@ namespace SupplierMvcApi
             var connectionString = new ConnectionString(Configuration.GetConnectionString("DefaultConnection"));
             services.AddSingleton(connectionString);
 
-            services.AddScoped<IDataService, SQLLiteDataService>();
+            services.AddScoped<IDataService, SqliteDataService>();
 
         }
 

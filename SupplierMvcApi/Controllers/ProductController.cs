@@ -23,11 +23,13 @@ namespace SupplierMvcApi.Controllers
             _productRepository = productRepository;
         }
 
+        [HttpGet("products")]
         public async Task<IActionResult> GetAllProducts()
         {
             var allProducts = await _productRepository.GetAll();
             return Ok(allProducts);
         }
+
 
         public IActionResult Index()
         {
