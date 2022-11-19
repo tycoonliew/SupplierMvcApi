@@ -62,7 +62,7 @@ namespace SupplierMvcApi.DataServices
                     [Name] NVARCHAR(256) NOT NULL,
                     [SKU] NVARCHAR(64) NOT NULL,
                     [Availability] BOOL NOT NULL,
-                    [Supplier] NVARCHAR(256) NOT NULL
+                    [Supplier] NVARCHAR(256)
                 )";
 
                 var productRowsAffected = dbConnection.Execute(createProductQuery);

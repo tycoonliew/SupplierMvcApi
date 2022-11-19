@@ -56,9 +56,10 @@ namespace SupplierMvcApi.Repository
         public async Task Create(ProductModel product)
         {
             string query = $@"INSERT INTO Product 
-                            VALUES @Product";
+                            VALUES (@Id, @Name, @Availability, @SKU, @Supplier)";
 
-            await _dataService.UpdateData(query, product);
+            await _dataService.UpdateData(query,
+                new { product.Id, product.Name, product.Availability, product.SKU, product.Supplier });
         }
 
         public async Task Delete(int id)

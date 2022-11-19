@@ -6,6 +6,6 @@
         public string Name { get; set; }
         public string SKU { get; set; }
         public bool Availability { get; set; }
-        public SupplierModel Supplier { get; set; } // Many to one
+        public string Supplier { get; set; } // Many to one
     }
 }

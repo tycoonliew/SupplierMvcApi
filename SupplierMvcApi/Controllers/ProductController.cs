@@ -32,8 +32,9 @@ namespace SupplierMvcApi.Controllers
         }
 
         [HttpPost("products")]
-        public async Task<IActionResult> AddNewProduct(ProductModel product)
+        public async Task<IActionResult> AddNewProduct([FromBody] ProductModel product)
         {
+            Console.WriteLine(product);
             await _productRepository.Create(product);
             return Created("products", product);
         }
