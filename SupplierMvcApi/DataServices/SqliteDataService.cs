@@ -34,6 +34,26 @@ namespace SupplierMvcApi.DataServices
             }
         }
 
+        public async Task<IEnumerable<ProductModel>> GetProductOneToMany<TParam>(string query, TParam parameters)
+        {
+            var path = _configuration.GetConnectionString("DefaultConnection");
+            using (var dbConnection = new SqliteConnection($"Data Source={path}"))
+            {
+                dbConnection.Open();
+                var result = await dbConnection.QueryAsync<ProductModel, SupplierModel, ProductModel>(
+                    query,
+                    (product, supplier) =>
+                    {
+                        product.Supplier = supplier;
+                        return product;
+                    },
+                    parameters,
+                    splitOn: "SupplierId"
+                );
+                return result;
+            }
+        }
+
         public async Task UpdateData<TDataType>(string query, TDataType parameter)
         {
             var path = _configuration.GetConnectionString("DefaultConnection");
@@ -58,11 +78,11 @@ namespace SupplierMvcApi.DataServices
                 @"
                 CREATE TABLE IF NOT EXISTS [Product] 
                 (
-                    [Id] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                    [Name] NVARCHAR(256) NOT NULL,
+                    [ProductId] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                    [ProductName] NVARCHAR(256) NOT NULL,
                     [SKU] NVARCHAR(64) NOT NULL,
                     [Availability] BOOL NOT NULL,
-                    [Supplier] NVARCHAR(256)
+                    [SupplierId] INTEGER
                 )";
 
                 var productRowsAffected = dbConnection.Execute(createProductQuery);
@@ -71,8 +91,8 @@ namespace SupplierMvcApi.DataServices
                 @"
                 CREATE TABLE IF NOT EXISTS [Supplier] 
                 (
-                    [Id] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                    [Name] NVARCHAR(256) NOT NULL
+                    [SupplierId] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                    [SupplierName] NVARCHAR(256) NOT NULL
                 )";
 
                 var supplierResult = dbConnection.Execute(createSupplierQuery);

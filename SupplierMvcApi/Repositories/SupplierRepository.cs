@@ -16,9 +16,12 @@ namespace SupplierMvcApi.Repository
             _dataService = dataService;
         }
 
-        public Task<IEnumerable<SupplierModel>> GetAll()
+        public async Task<IEnumerable<SupplierModel>> GetAll()
         {
-            throw new NotImplementedException();
+            string query = @"SELECT *
+                            FROM Supplier
+                            ";
+            return await _dataService.GetData<SupplierModel, dynamic>(query, new { });
         }
 
         public Task<SupplierModel> GetById(int id)
@@ -32,9 +35,14 @@ namespace SupplierMvcApi.Repository
         }
 
 
-        public Task Create(SupplierModel supplier)
+        public async Task Create(SupplierModel supplier)
         {
-            throw new NotImplementedException();
+            string query = $@"INSERT
+                            INTO Supplier (SupplierName)
+                            VALUES (@SupplierName)";
+
+            await _dataService.UpdateData(query,
+                new { supplier.SupplierName });
         }
 
         public Task Delete(int id)

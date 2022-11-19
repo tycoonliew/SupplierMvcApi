@@ -20,8 +20,11 @@ namespace SupplierMvcApi.Repository
 
         public async Task<IEnumerable<ProductModel>> GetAll()
         {
-            string query = @"SELECT * FROM Product";
-            return await _dataService.GetData<ProductModel, dynamic>(query, new { });
+            string query = @"SELECT p.ProductId, p.ProductName, p.SKU, p.Availability, p.SupplierId, s.SupplierName 
+                            FROM Product p
+                            INNER JOIN Supplier s on p.SupplierId = s.SupplierId
+                            ";
+            return await _dataService.GetProductOneToMany<dynamic>(query, new { });
         }
 
         public async Task<ProductModel> GetById(int id)
@@ -46,18 +49,18 @@ namespace SupplierMvcApi.Repository
         {
             string query = $@"UPDATE Product 
                             SET @Product
-                            WHERE Id = @Id";
+                            WHERE ProductId = @Id";
 
             await _dataService.UpdateData(query, new { Id = id, Product = product });
         }
 
         public async Task Create(ProductModel product)
         {
-            string query = $@"INSERT INTO Product (Name, SKU, Availability, Supplier)
-                            VALUES (@Name, @SKU, @Availability,@Supplier)";
+            string query = $@"INSERT INTO Product (ProductName, SKU, Availability, SupplierId)
+                            VALUES (@ProductName, @SKU, @Availability,@SupplierId)";
 
             await _dataService.UpdateData(query,
-                new { product.Name, product.Availability, product.SKU, product.Supplier });
+                new { product.ProductName, product.Availability, product.SKU, product.SupplierId });
         }
 
         public async Task Delete(int id)

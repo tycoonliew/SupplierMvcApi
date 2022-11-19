@@ -17,6 +17,7 @@ namespace SupplierMvcApi.Controllers
         private readonly ILogger<ProductController> _logger;
         private readonly IProductRepository _productRepository;
         private readonly ISupplierRepository _supplierRepository;
+
         public ProductController(ILogger<ProductController> logger, IProductRepository productRepository, ISupplierRepository supplierRepository)
         {
             _logger = logger;
@@ -37,6 +38,20 @@ namespace SupplierMvcApi.Controllers
             Console.WriteLine(product);
             await _productRepository.Create(product);
             return Created("products", product);
+        }
+
+        [HttpGet("suppliers")]
+        public async Task<IActionResult> GetAllSuppliers()
+        {
+            var allSuppliers = await _supplierRepository.GetAll();
+            return Ok(allSuppliers);
+        }
+
+        [HttpPost("suppliers")]
+        public async Task<IActionResult> AddNewSupplier([FromBody] SupplierModel supplier)
+        {
+            await _supplierRepository.Create(supplier);
+            return Created("supplier", supplier);
         }
 
 
