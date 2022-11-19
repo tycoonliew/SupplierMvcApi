@@ -14,11 +14,19 @@ namespace SupplierMvcApi.Controllers
     {
         private readonly ILogger<ProductController> _logger;
         private readonly IDataService _dataService;
-
-        public ProductController(ILogger<ProductController> logger, IDataService dataService)
+        private readonly ProductRepository _productRepository;
+        private readonly SupplierRepository _supplierRepository;
+        public ProductController(ILogger<ProductController> logger, IDataService dataService, ProductRepository productRepository, SupplierRepository supplierRepository)
         {
             _logger = logger;
             _dataService = dataService;
+            _productRepository = productRepository;
+        }
+
+        public async Task<IActionResult> GetAllProducts()
+        {
+            var allProducts = await _productRepository.GetAll();
+            return Ok(allProducts);
         }
 
         public IActionResult Index()

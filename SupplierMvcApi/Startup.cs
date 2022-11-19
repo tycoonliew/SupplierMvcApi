@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SupplierMvcApi.DataServices;
+using SupplierMvcApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,10 @@ namespace SupplierMvcApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            var connectionString = new ConnectionString(Configuration.GetConnectionString("DefaultConnection"));
+            services.AddSingleton(connectionString);
+
             services.AddScoped<IDataService, SQLLiteDataService>();
 
         }

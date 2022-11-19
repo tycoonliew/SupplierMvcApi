@@ -1,4 +1,6 @@
-﻿namespace SupplierMvcApi.DataServices
+﻿using SupplierMvcApi.Models;
+
+namespace SupplierMvcApi.DataServices
 {
     public interface IDataService
     {
